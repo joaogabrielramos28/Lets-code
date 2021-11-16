@@ -1,5 +1,4 @@
 import React from 'react';
-const foo = 'bar';
 export const App: React.FC = () => {
     return (
         <>
