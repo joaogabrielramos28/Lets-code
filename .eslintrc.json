@@ -3,6 +3,11 @@
         "browser": true,
         "es2021": true
     },
+    "settings": {
+        "react":{
+            "version": "detect"
+        }
+    },
     "extends": [
         "eslint:recommended",
         "plugin:react/recommended",
@@ -28,6 +33,7 @@
         "react-hooks/exhaustive-deps": "warn",
         "react/prop-types": "off",
         "@typescript-eslint/explicit-module-boundary-types": "off",
-        "prettier/prettier": "error"
+        "prettier/prettier": "error",
+        "react/react-in-jsx-scope":"off"
     }
 }
