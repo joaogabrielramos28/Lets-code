@@ -56,17 +56,9 @@ export const Actions = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
 
     svg {
         margin: 0 10px;
     }
-`;
-
-export const CardHeader = styled.div`
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 3px solid #c4c4c4;
 `;
