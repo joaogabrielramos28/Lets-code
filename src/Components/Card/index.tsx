@@ -11,12 +11,22 @@ import {
 interface CardProps {
     titulo: string;
     conteudo: string;
+    handleDeleteCard(id: string): void;
+    id: string;
 }
 
-const Card: React.FC<CardProps> = ({ titulo, conteudo }: CardProps) => {
+const Card: React.FC<CardProps> = ({
+    titulo,
+    conteudo,
+    handleDeleteCard,
+    id
+}: CardProps) => {
     const [editMode, setEditMode] = useState(false);
     const handleEditCard = () => {
         setEditMode(true);
+    };
+    const handle = () => {
+        handleDeleteCard(id);
     };
 
     const handleDisableEditMode = () => {
@@ -49,7 +59,7 @@ const Card: React.FC<CardProps> = ({ titulo, conteudo }: CardProps) => {
                     </Content>
                     <Actions>
                         <BsFillArrowLeftCircleFill size={30} />
-                        <AiFillDelete size={30} />
+                        <AiFillDelete size={30} onClick={handle} />
                         <BsFillArrowRightCircleFill size={30} />
                     </Actions>
                 </>
