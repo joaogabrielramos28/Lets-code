@@ -10,7 +10,7 @@ export const App: React.FC = () => {
                 <Board />
                 <GlobalStyle />
             </ActionsProvider>
-            <ToastContainer theme={'dark'} />
+            <ToastContainer theme={'colored'} />
         </>
     );
 };

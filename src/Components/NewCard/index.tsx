@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { Container, Content, Actions } from './styles';
-import api from '../../services/api';
 import { IoIosAddCircle } from 'react-icons/io';
 interface NewCardProps {
     handleCreateCard(
