@@ -34,7 +34,6 @@ interface ActionsContextData {
 const ActionsContext: any = createContext({});
 
 const ActionsProvider: React.FC = ({ children }) => {
-    const [editMode, setEditMode] = useState(false);
     const [bearerToken, setBearerToken] = useState(() => {
         const token = localStorage.getItem('@letscode:Token');
         if (token) {
@@ -110,21 +109,22 @@ const ActionsProvider: React.FC = ({ children }) => {
             titulo: inputRef.current?.value,
             conteudo: textAreaRef.current?.value,
             lista: 'ToDo'
-        });
-        const newCard = {
-            id: '123',
-            titulo: inputRef.current?.value,
-            conteudo: textAreaRef.current?.value,
-            lista: 'ToDo'
-        };
-        const newList = [];
-        data?.map((card) => {
-            newList.push(card);
-        });
+        }).then((response) => {
+            const newCard = {
+                id: response.data.id,
+                titulo: inputRef.current?.value,
+                conteudo: textAreaRef.current?.value,
+                lista: 'ToDo'
+            };
+            const newList = [];
+            data?.map((card) => {
+                newList.push(card);
+            });
 
-        newList.push(newCard);
-        ToastFunction('Card Created!', 'success');
-        mutate(newList, false);
+            newList.push(newCard);
+            ToastFunction('Card Created!', 'success');
+            mutate(newList, false);
+        });
     };
 
     const handleUpdateCardContent = (
@@ -153,7 +153,6 @@ const ActionsProvider: React.FC = ({ children }) => {
         });
 
         mutate(newCardList, false);
-        setEditMode(false);
     };
     return (
         <ActionsContext.Provider
@@ -162,9 +161,7 @@ const ActionsProvider: React.FC = ({ children }) => {
                 handleDeleteCard,
                 handleEditToToDo,
                 handleCreateCard,
-                handleUpdateCardContent,
-                setEditMode,
-                editMode
+                handleUpdateCardContent
             }}
         >
             {children}

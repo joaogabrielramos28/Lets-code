@@ -22,13 +22,10 @@ const Card: React.FC<CardProps> = ({
     id,
     lista
 }: CardProps) => {
-    const {
-        handleDeleteCard,
-        handleEditToToDo,
-        handleUpdateCardContent,
-        setEditMode,
-        editMode
-    } = useActions();
+    const { handleDeleteCard, handleEditToToDo, handleUpdateCardContent } =
+        useActions();
+    const [editMode, setEditMode] = useState(false);
+
     const inputRef = useRef<HTMLInputElement>(null);
     const texteAreaRef = useRef<HTMLTextAreaElement>(null);
     const handleEditCard = () => {
@@ -36,6 +33,11 @@ const Card: React.FC<CardProps> = ({
     };
 
     const handleDisableEditMode = () => {
+        setEditMode(false);
+    };
+
+    const handleUpdate = () => {
+        handleUpdateCardContent(id, lista, inputRef, texteAreaRef);
         setEditMode(false);
     };
 
@@ -58,17 +60,7 @@ const Card: React.FC<CardProps> = ({
                     <Actions>
                         <BiBlock size={30} onClick={handleDisableEditMode} />
                         <p></p>
-                        <FaSave
-                            size={30}
-                            onClick={() =>
-                                handleUpdateCardContent(
-                                    id,
-                                    lista,
-                                    inputRef,
-                                    texteAreaRef
-                                )
-                            }
-                        />
+                        <FaSave size={30} onClick={handleUpdate} />
                     </Actions>
                 </>
             ) : (
