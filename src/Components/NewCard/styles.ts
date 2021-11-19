@@ -3,24 +3,37 @@ import styled from 'styled-components';
 export const Container = styled.div`
     padding: 12px;
     width: 250px;
-    border: 1px solid rgba(0, 0, 0, 0.6);
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
     text-align: center;
-    background-color: #fff;
     height: 250px;
     border-radius: 8px;
+    background-color: #ebecf0;
+    color: #172b4d;
 
     input {
         padding: 8px 8px;
         border-radius: 4px;
         border: none;
-        border: 1px solid #c4c4c4;
         outline: none;
+        background-color: #fff;
+        box-shadow: 0 1px 0 #091e4240;
+        &:focus {
+            border: 2px solid #026aa7;
+        }
     }
 
     textarea {
-        border: 1px solid #c4c4c4;
         border-radius: 4px;
+        background-color: #fff;
+        border: none;
         margin-top: 10px;
+        resize: none;
+        box-shadow: 0 1px 0 #091e4240;
+        outline: none;
+
+        &:focus {
+            border: 2px solid #026aa7;
+        }
     }
 
     h3 {

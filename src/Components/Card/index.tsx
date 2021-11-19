@@ -9,8 +9,6 @@ import {
     BsFillArrowLeftCircleFill,
     BsFillArrowRightCircleFill
 } from 'react-icons/bs';
-import api from '../../services/api';
-import { mutate as mutateGlobal } from 'swr';
 interface CardProps {
     titulo: string;
     conteudo: string;

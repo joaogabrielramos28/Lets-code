@@ -8,7 +8,10 @@ const GlobalStyle = createGlobalStyle`
 
     }
 
-
+    #root{
+        overflow-x:hidden;
+        background-color:#f4f5f6
+    }
 `;
 
 export default GlobalStyle;
