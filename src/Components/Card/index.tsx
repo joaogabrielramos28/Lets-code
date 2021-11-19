@@ -13,20 +13,26 @@ interface CardProps {
     conteudo: string;
     handleDeleteCard(id: string): void;
     id: string;
+    lista: string;
+    handleEditToToDo(
+        id: string,
+        titulo: string,
+        conteudo: string,
+        lista: string
+    ): void;
 }
 
 const Card: React.FC<CardProps> = ({
     titulo,
     conteudo,
     handleDeleteCard,
-    id
+    handleEditToToDo,
+    id,
+    lista
 }: CardProps) => {
     const [editMode, setEditMode] = useState(false);
     const handleEditCard = () => {
         setEditMode(true);
-    };
-    const handle = () => {
-        handleDeleteCard(id);
     };
 
     const handleDisableEditMode = () => {
@@ -58,9 +64,66 @@ const Card: React.FC<CardProps> = ({
                         <p>{conteudo}</p>
                     </Content>
                     <Actions>
-                        <BsFillArrowLeftCircleFill size={30} />
-                        <AiFillDelete size={30} onClick={handle} />
-                        <BsFillArrowRightCircleFill size={30} />
+                        <BsFillArrowLeftCircleFill
+                            size={30}
+                            onClick={
+                                lista === 'Doing'
+                                    ? () =>
+                                          handleEditToToDo(
+                                              id,
+                                              titulo,
+                                              conteudo,
+                                              'ToDo'
+                                          )
+                                    : lista === 'Done'
+                                    ? () =>
+                                          handleEditToToDo(
+                                              id,
+                                              titulo,
+                                              conteudo,
+                                              'Doing'
+                                          )
+                                    : () =>
+                                          handleEditToToDo(
+                                              id,
+                                              titulo,
+                                              conteudo,
+                                              'ToDo'
+                                          )
+                            }
+                        />
+                        <AiFillDelete
+                            size={30}
+                            onClick={() => handleDeleteCard(id)}
+                        />
+                        <BsFillArrowRightCircleFill
+                            size={30}
+                            onClick={
+                                lista === 'ToDo'
+                                    ? () =>
+                                          handleEditToToDo(
+                                              id,
+                                              titulo,
+                                              conteudo,
+                                              'Doing'
+                                          )
+                                    : lista === 'Doing'
+                                    ? () =>
+                                          handleEditToToDo(
+                                              id,
+                                              titulo,
+                                              conteudo,
+                                              'Done'
+                                          )
+                                    : () =>
+                                          handleEditToToDo(
+                                              id,
+                                              titulo,
+                                              conteudo,
+                                              'Done'
+                                          )
+                            }
+                        />
                     </Actions>
                 </>
             )}

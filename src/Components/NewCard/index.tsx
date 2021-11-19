@@ -14,9 +14,6 @@ const NewCard: React.FC<NewCardProps> = ({ bearerToken }: NewCardProps) => {
     const handleSubmit = () => {
         try {
             api.post('/cards', {
-                headers: {
-                    Authorization: `Bearer ${bearerToken}`
-                },
                 titulo: inputRef.current?.value,
                 conteudo: textAreaRef.current?.value,
                 lista: 'ToDo'
@@ -32,7 +29,9 @@ const NewCard: React.FC<NewCardProps> = ({ bearerToken }: NewCardProps) => {
                 <textarea ref={textAreaRef} rows={5}></textarea>
             </Content>
             <Actions>
-                <IoIosAddCircle size={38} onClick={handleSubmit} />
+                <form onSubmit={handleSubmit}>
+                    <IoIosAddCircle size={38} onClick={handleSubmit} />
+                </form>
             </Actions>
         </Container>
     );

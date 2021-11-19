@@ -12,22 +12,44 @@ interface CardData {
     lista: string;
 }
 const Board: React.FC = () => {
-    const [bearerToken, setBearerToken] = useState('');
+    const [bearerToken, setBearerToken] = useState(() => {
+        const token = localStorage.getItem('@letscode:Token');
+        if (token) {
+            const formattedToken = JSON.parse(token);
+            return formattedToken;
+        }
+        return '';
+    });
     const [cardList, setCardList] = useState<CardData[]>([]);
-    useEffect(() => {
+    const login = () => {
         api.post('/login', {
             login: 'letscode',
             senha: 'lets@123'
         }).then((response) => {
+            const token = JSON.stringify(response.data);
+            localStorage.setItem('@letscode:Token', token);
             setBearerToken(response.data);
         });
-    }, []);
+    };
 
     const handleDeleteCard = (id: string): void => {
         api.delete(`/cards/${id}`, {
             headers: {
                 Authorization: `Bearer ${bearerToken}`
             }
+        });
+    };
+    const handleEditToToDo = (
+        id: string,
+        titulo: string,
+        conteudo: string,
+        lista: string
+    ): void => {
+        api.put(`/cards/${id}`, {
+            id: id,
+            titulo: titulo,
+            conteudo: conteudo,
+            lista: lista
         });
     };
 
@@ -60,11 +82,41 @@ const Board: React.FC = () => {
                             conteudo={card.conteudo}
                             handleDeleteCard={handleDeleteCard}
                             id={card.id}
+                            lista={card.lista}
+                            handleEditToToDo={handleEditToToDo}
                         />
                     ))}
             </List>
-            {/* <List titulo="Doing" />
-            <List titulo="Done" /> */}
+            <List titulo="Doing">
+                {cardList
+                    .filter((card) => card.lista == 'Doing')
+                    .map((card) => (
+                        <Card
+                            key={card.id}
+                            titulo={card.titulo}
+                            conteudo={card.conteudo}
+                            handleDeleteCard={handleDeleteCard}
+                            handleEditToToDo={handleEditToToDo}
+                            id={card.id}
+                            lista={card.lista}
+                        />
+                    ))}
+            </List>
+            <List titulo="Done">
+                {cardList
+                    .filter((card) => card.lista == 'Done')
+                    .map((card) => (
+                        <Card
+                            key={card.id}
+                            titulo={card.titulo}
+                            conteudo={card.conteudo}
+                            handleDeleteCard={handleDeleteCard}
+                            handleEditToToDo={handleEditToToDo}
+                            id={card.id}
+                            lista={card.lista}
+                        />
+                    ))}
+            </List>
         </Container>
     );
 };
