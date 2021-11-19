@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { useFetch } from './useFetch';
 import api from '../services/api';
+import ToastFunction from '../utils/toast';
 interface CardData {
     id: string;
     titulo?: string;
@@ -68,6 +69,7 @@ const ActionsProvider: React.FC = ({ children }) => {
                 return card;
             });
         mutate(newCardList, false);
+        ToastFunction('Card deleted!', 'success');
     };
     const handleEditToToDo = (
         id: string,
@@ -97,6 +99,13 @@ const ActionsProvider: React.FC = ({ children }) => {
         inputRef: React.RefObject<HTMLInputElement>,
         textAreaRef: React.RefObject<HTMLTextAreaElement>
     ) => {
+        if (
+            inputRef.current?.value === '' ||
+            textAreaRef.current?.value === ''
+        ) {
+            ToastFunction('Fill all fields', 'error');
+            return;
+        }
         api.post('/cards', {
             titulo: inputRef.current?.value,
             conteudo: textAreaRef.current?.value,
@@ -114,7 +123,7 @@ const ActionsProvider: React.FC = ({ children }) => {
         });
 
         newList.push(newCard);
-
+        ToastFunction('Card Created!', 'success');
         mutate(newList, false);
     };
 
