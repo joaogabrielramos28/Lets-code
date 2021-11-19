@@ -4,34 +4,33 @@ import { AiFillDelete } from 'react-icons/ai';
 import { FiEdit } from 'react-icons/fi';
 import { FaSave } from 'react-icons/fa';
 import { BiBlock } from 'react-icons/bi';
+import { useActions } from '../../hooks/ActionsContext';
 import {
     BsFillArrowLeftCircleFill,
     BsFillArrowRightCircleFill
 } from 'react-icons/bs';
 import api from '../../services/api';
+import { mutate as mutateGlobal } from 'swr';
 interface CardProps {
     titulo: string;
     conteudo: string;
-    handleDeleteCard(id: string): void;
     id: string;
     lista: string;
-    handleEditToToDo(
-        id: string,
-        titulo: string,
-        conteudo: string,
-        lista: string
-    ): void;
 }
 
 const Card: React.FC<CardProps> = ({
     titulo,
     conteudo,
-    handleDeleteCard,
-    handleEditToToDo,
     id,
     lista
 }: CardProps) => {
-    const [editMode, setEditMode] = useState(false);
+    const {
+        handleDeleteCard,
+        handleEditToToDo,
+        handleUpdateCardContent,
+        setEditMode,
+        editMode
+    } = useActions();
     const inputRef = useRef<HTMLInputElement>(null);
     const texteAreaRef = useRef<HTMLTextAreaElement>(null);
     const handleEditCard = () => {
@@ -42,23 +41,11 @@ const Card: React.FC<CardProps> = ({
         setEditMode(false);
     };
 
-    const handleUpdateCardContent = (id: string, lista: string): void => {
-        api.put(`/cards/${id}`, {
-            id: id,
-            titulo: inputRef.current?.value,
-            conteudo: texteAreaRef.current?.value,
-            lista: lista
-        });
-
-        setEditMode(false);
-    };
-
     return (
         <Container>
             {editMode ? (
                 <>
                     <Content>
-                        <form action=""></form>
                         <input
                             ref={inputRef}
                             type="text"
@@ -75,7 +62,14 @@ const Card: React.FC<CardProps> = ({
                         <p></p>
                         <FaSave
                             size={30}
-                            onClick={() => handleUpdateCardContent(id, lista)}
+                            onClick={() =>
+                                handleUpdateCardContent(
+                                    id,
+                                    lista,
+                                    inputRef,
+                                    texteAreaRef
+                                )
+                            }
                         />
                     </Actions>
                 </>

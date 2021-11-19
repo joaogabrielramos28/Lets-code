@@ -2,26 +2,19 @@ import React, { useRef } from 'react';
 import { Container, Content, Actions } from './styles';
 import api from '../../services/api';
 import { IoIosAddCircle } from 'react-icons/io';
-
 interface NewCardProps {
-    bearerToken: React.SetStateAction<string>;
+    handleCreateCard(
+        inputRef: React.RefObject<HTMLInputElement>,
+        textAreaRef: React.RefObject<HTMLTextAreaElement>
+    ): void;
 }
 
-const NewCard: React.FC<NewCardProps> = ({ bearerToken }: NewCardProps) => {
+const NewCard: React.FC<NewCardProps> = ({
+    handleCreateCard
+}: NewCardProps) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-    const handleSubmit = () => {
-        try {
-            api.post('/cards', {
-                titulo: inputRef.current?.value,
-                conteudo: textAreaRef.current?.value,
-                lista: 'ToDo'
-            });
-        } catch (e) {
-            console.log(e);
-        }
-    };
     return (
         <Container>
             <Content>
@@ -29,9 +22,10 @@ const NewCard: React.FC<NewCardProps> = ({ bearerToken }: NewCardProps) => {
                 <textarea ref={textAreaRef} rows={5}></textarea>
             </Content>
             <Actions>
-                <form onSubmit={handleSubmit}>
-                    <IoIosAddCircle size={38} onClick={handleSubmit} />
-                </form>
+                <IoIosAddCircle
+                    size={38}
+                    onClick={() => handleCreateCard(inputRef, textAreaRef)}
+                />
             </Actions>
         </Container>
     );
