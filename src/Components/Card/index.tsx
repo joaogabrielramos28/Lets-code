@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Container, Content, Actions, CardHeader } from './styles';
 import { AiFillDelete } from 'react-icons/ai';
 import { FiEdit } from 'react-icons/fi';
@@ -8,6 +8,7 @@ import {
     BsFillArrowLeftCircleFill,
     BsFillArrowRightCircleFill
 } from 'react-icons/bs';
+import api from '../../services/api';
 interface CardProps {
     titulo: string;
     conteudo: string;
@@ -31,6 +32,8 @@ const Card: React.FC<CardProps> = ({
     lista
 }: CardProps) => {
     const [editMode, setEditMode] = useState(false);
+    const inputRef = useRef<HTMLInputElement>(null);
+    const texteAreaRef = useRef<HTMLTextAreaElement>(null);
     const handleEditCard = () => {
         setEditMode(true);
     };
@@ -39,18 +42,41 @@ const Card: React.FC<CardProps> = ({
         setEditMode(false);
     };
 
+    const handleUpdateCardContent = (id: string, lista: string): void => {
+        api.put(`/cards/${id}`, {
+            id: id,
+            titulo: inputRef.current?.value,
+            conteudo: texteAreaRef.current?.value,
+            lista: lista
+        });
+
+        setEditMode(false);
+    };
+
     return (
         <Container>
             {editMode ? (
                 <>
                     <Content>
-                        <input type="text" value={titulo} />
-                        <textarea rows={5} value={conteudo}></textarea>
+                        <form action=""></form>
+                        <input
+                            ref={inputRef}
+                            type="text"
+                            defaultValue={titulo}
+                        />
+                        <textarea
+                            ref={texteAreaRef}
+                            rows={5}
+                            defaultValue={conteudo}
+                        ></textarea>
                     </Content>
                     <Actions>
                         <BiBlock size={30} onClick={handleDisableEditMode} />
                         <p></p>
-                        <FaSave size={30} />
+                        <FaSave
+                            size={30}
+                            onClick={() => handleUpdateCardContent(id, lista)}
+                        />
                     </Actions>
                 </>
             ) : (

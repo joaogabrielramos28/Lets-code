@@ -21,7 +21,7 @@ const Board: React.FC = () => {
         return '';
     });
     const [cardList, setCardList] = useState<CardData[]>([]);
-    const login = () => {
+    useEffect(() => {
         api.post('/login', {
             login: 'letscode',
             senha: 'lets@123'
@@ -30,7 +30,7 @@ const Board: React.FC = () => {
             localStorage.setItem('@letscode:Token', token);
             setBearerToken(response.data);
         });
-    };
+    }, []);
 
     const handleDeleteCard = (id: string): void => {
         api.delete(`/cards/${id}`, {
